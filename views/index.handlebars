@@ -5,13 +5,13 @@
 
   <div class="form-group">
     <label for="ca">Enter Burger:</label>
-    <input type="text" id="ca" name="burgerName">
+    <input type="text" id="id" name="burgerName">
   </div>
   <button type="submit">Find burger</button>
 </form>
 
 <ul>
-  {{#each burger}}
+  {{#each burgerName}}
     {{#unless devoured}}
       {{> burger/burger-block devoured=false}}
     {{/unless}}
@@ -21,7 +21,7 @@
 <h2>Burger that have been DEVOURED!</h2>
 
 <ul>
-  {{#each burger}}
+  {{#each burgerName}}
     {{#if devoured}}
       {{> burger/burger-block devoured=true}}
     {{/if}}

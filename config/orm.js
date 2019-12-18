@@ -1,4 +1,14 @@
-var connection = require("./promisify");
+var connection = require("./connection");
+
+function printQuestionMarks(num) {
+  var arr = [];
+
+  for (var i = 0; i < num; i++) {
+    arr.push("?");
+  }
+
+  return arr.toString();
+}
 
 function objToSql(ob) {
   var arr = [];
@@ -17,17 +27,26 @@ function objToSql(ob) {
 };
 
 var orm = {
-  all: function(tableInput) {
-    var queryString = "SELECT * FROM " + tableInput + ";";
+  selectAll: function(tableInput) {
+    var queryString = "SELECT * FROM " + tableInput;
     console.log(queryString);
     return connection.query(queryString);
   },
+
+  insertOne: function(table, object, vals) {
+    var queryString = "INSERT INTO " + table;
+
+    queryString += '(' + objToSql(object) + ')';
+    queryString += ' VALUES (' + printQuestionMarks(vals) + ')'
+
+    return connection.query(queryString);
+  },
    
-  update: function(table, objColVals, condition) {
+  updateOne: function(table, object, condition) {
     var queryString = "UPDATE " + table;
   
     queryString += " SET ";
-    queryString += objToSql(objColVals);
+    queryString += objToSql(object);
     queryString += " WHERE ";
     queryString += condition;
   

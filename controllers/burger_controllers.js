@@ -4,20 +4,29 @@ var router = express.Router();
 
 // Create all our routes and set up logic within those routes where required.
 router.get("/", function(req, res) {
-  burger.all().then(function(data) {
+  burger.selectAll().then(function(data) {
+    var condition = "id = " + req.params.id;
     var hbsObject = {
-      burgers: data
+      burgers: condition
     };
     console.log(hbsObject);
     res.render("index", hbsObject);
   });
 });
 
+router.post("/api/burgers", function(req, res) {
+  burger.insertOne(req.body.name, function(result) {
+    
+    console.log(result);
+    res.redirect("/");
+  });
+})
+
 router.put("/api/burgers/:id", function(req, res) {
   var condition = "id = " + req.params.id;
   console.log("condition", condition);
 
-  burger.update(
+  burger.updateOne(
     {
       devoured: req.body.devoured
     },
