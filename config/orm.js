@@ -14,23 +14,23 @@ function objToSql(ob) {
   var arr = [];
 
   for (var key in ob) {
-    var value = ob[key];
-    
-    if (Object.hasOwnProperty.call(ob, key)) {
-      
-      if (typeof value === "string" && value.indexOf(" ") >= 0) {
-        value = "'" + value + "'";
-      }
-      arr.push(key + "=" + value);
-    }
+    arr.push(key + "=" + ob[key]);
   }
-};
+
+  return arr.toString();
+}
 
 var orm = {
-  selectAll: function(tableInput) {
-    var queryString = "SELECT * FROM " + tableInput;
+  selectAll: function(tableInput, cb) {
+    var queryString = "SELECT * FROM " + tableInput + ";";
     console.log(queryString);
-    return connection.query(queryString);
+
+    connection.query(queryString, function(err, res) {
+      if(err){
+        return err
+      }
+      cb(res);
+    });
   },
 
   insertOne: function(table, object, vals) {

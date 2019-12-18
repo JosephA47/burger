@@ -2,27 +2,31 @@ var express = require("express");
 var burger = require("../models/burger")
 var router = express.Router();
 
-// Create all our routes and set up logic within those routes where required.
 router.get("/", function(req, res) {
-  burger.selectAll().then(function(data) {
-    var condition = "id = " + req.params.id;
-    var hbsObject = {
-      burgers: condition
-    };
-    console.log(hbsObject);
-    res.render("index", hbsObject);
+  res.redirect("/burgers")
+})
+
+router.get("/burgers", function(req, res) {
+  burger.selectAll(function(data) {
+    var obj = {
+      burger: data
+    }
+
+    console.log(obj);
+    res.render("index", obj);
   });
 });
 
-router.post("/api/burgers", function(req, res) {
-  burger.insertOne(req.body.name, function(result) {
+router.post("/burgers/insert", function(req, res) {
+  burger.insertOne(["burgerName", "devoured"],[req.body.burgerName, req.body.devoured], function(result) {
     
     console.log(result);
+    res.json({ id: result.id})
     res.redirect("/");
   });
 })
 
-router.put("/api/burgers/:id", function(req, res) {
+router.put("/burgers/:id", function(req, res) {
   var condition = "id = " + req.params.id;
   console.log("condition", condition);
 
@@ -30,16 +34,16 @@ router.put("/api/burgers/:id", function(req, res) {
     {
       devoured: req.body.devoured
     },
-    condition)
-    .then(
+    condition,
+    
     function(result) {
       if (result.changedRows === 0) {
         return res.status(404).end();
       }
       res.status(200).end();
+      location.reload()
     }
   );
 });
 
-// Export routes for server.js to use.
 module.exports = router;
