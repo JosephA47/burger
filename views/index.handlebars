@@ -1,15 +1,17 @@
-<h1>Eat da Burger!</h1>
+<h1 style="text-align: center;">Eat da Burger!</h1>
 
-<ul>
-  {{#each burger}}
-  {{#unless devoured}}
-  <h1>{{this.id}}: {{this.burgerName}}</h1>
-  <button class="change-devour" data-id="{{id}}" data-changeDevour="{{devour}}">
-    {{#if devoured}}Consume da Burger!{{else}}Consume da Burger!{{/if}}
-  </button>
-  {{/unless}}
-  {{/each}}
-</ul>
+<div style="float: left;">
+  <ul>
+    {{#each burger}}
+    {{#unless devoured}}
+    <h1>{{this.id}}: {{this.burgerName}}</h1>
+    <button class="change-devour" data-id="{{id}}" data-changeDevour="{{devour}}">
+      {{#if devoured}}Consume da Burger!{{else}}Consume da Burger!{{/if}}
+    </button>
+    {{/unless}}
+    {{/each}}
+  </ul>
+</div>
 
 <div style="float: right;">
   <h2>Burgers that have been DEVOURED!</h2>
@@ -22,9 +24,13 @@
   </ul>
 </div>
 
-<h2>Create new Burger</h2>
-<div class="form-group">
-  <label for="ca">Enter your new burger:</label>
-  <input type="text" class="add-burger" id="burger" name="burgerName">
-  <button type="submit">Find burger</button>
+<div style="float: left; clear: left">
+  <h2>Create new Burger</h2>
+  <div class="form-group">
+    <label for="title">Enter your new burger:</label>
+    <form class="newBurger-form" action="/burger/insert" method="POST">
+      <input type="text" id="burgerName" value="" placeholder="Enter Here" name="burgerName">
+      <button type="submit" id="add-burger">Create burger</button>
+    </form>
+  </div>
 </div>

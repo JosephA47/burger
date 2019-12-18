@@ -1,6 +1,6 @@
 var connection = require("./connection");
 
-function printQuestionMarks(num) {
+function printQMarks(num) {
   var arr = [];
 
   for (var i = 0; i < num; i++) {
@@ -33,13 +33,14 @@ var orm = {
     });
   },
 
-  insertOne: function(table, object, vals) {
+  insertOne: function(table, cols, vals) {
     var queryString = "INSERT INTO " + table;
 
-    queryString += '(' + objToSql(object) + ')';
-    queryString += ' VALUES (' + printQuestionMarks(vals) + ')'
+    queryString += " (" + cols.toString() + ") ";
+    queryString += "VALUES (" + printQMarks(vals.length) + ")";
 
-    return connection.query(queryString);
+    console.log(queryString)
+    return connection.query(queryString, vals)  
   },
    
   updateOne: function(table, object, condition) {
@@ -51,7 +52,7 @@ var orm = {
     queryString += condition;
   
     console.log(queryString);
-    return connection.query(queryString);
+    return connection.query(queryString)
   }
 };
 
